@@ -9,7 +9,47 @@ We’re [zeitkapsl.eu](https://zeitkapsl.eu/en/?utm_source=github_rust_intern), 
 - 🌐 Web (via WASM)
 
 This project is a **proof of concept** to validate if Rust is the right foundation for our core functionality — and you're going to help us figure that out!
-Pick any topic from the list below that sounds interesting for you:
+Pick any or multiple topic(s) from the list below that sounds interesting for you:
+
+## 🧱 Current Pain Points
+
+We already have a shared core implemented in [Go](https://go.dev), exposed to mobile via [GoMobile](https://pkg.go.dev/golang.org/x/mobile/cmd/gomobile). While this setup works reasonably well, we’ve run into several persistent limitations:
+
+- **💡 Poor type interoperability:**  
+  GoMobile only supports a very limited set of types — no slices, arrays, maps, or complex/nested structs. We've had to rely on Protobuf as a workaround to pass structured data across the FFI boundary.
+
+- **🧼 Type massaging:**  
+  Even with Protobuf, we often need to "massage" or flatten types manually to make them FFI-compatible. This adds friction and complexity to evolving the core logic.
+
+- **🛠️ Difficult cross-compilation:**  
+  CGO dependencies (e.g., for FFmpeg, SQLite) complicate cross-platform builds. We've resorted to using [Zig](https://ziglang.org/) to patch over the pain, but it’s still brittle.
+
+- **🌐 No shared core for Web:**  
+  Our current Go setup doesn’t compile cleanly to WASM. Go WASM binaries are very large and [tinygo](https://tinygo.org/) would require a near rewrite. As a result, our Web client uses a completely separate implementation.
+
+- **🕵️ Debugging across FFI is painful:**  
+  Once you're across the boundary, debugging is basically guesswork. Breakpoints and stack traces become near-useless.
+
+- **🚫 No native async/coroutine support:**  
+  GoMobile doesn’t integrate well with Kotlin Coroutines or Swift `async/await`. We’ve had to implement workarounds using callback hell or custom threading models.
+
+---
+
+## 🔍 Possible Alternatives to Rust
+
+Before fully committing to Rust, we’re open to comparing other approaches. Some potential alternatives include:
+
+- [**Kotlin Multiplatform**](https://kotlinlang.org/docs/multiplatform.html)  
+  Could be a good fit if we lean further into the Kotlin ecosystem. It offers solid sharing between Android, iOS, and Web — though support for low-level processing (e.g., image/video/crypto) is limited compared to Rust or C.
+
+- [**Zig**](https://ziglang.org/)  
+  An exciting language with first-class cross-compilation and a C-like FFI story. Promising, but still pre-1.0 and lacks the ecosystem maturity.
+
+- [**C/C++ with manual bindings**]  
+  We've also considered falling back to C/C++ for native interop, but to be honest I have done far too much C and C++ in my life.
+
+- [**Your suggestion here!**]  
+  We’re curious what other options you think might be viable — especially if you’ve worked on high-performance multiplatform apps.
 
 ---
 
