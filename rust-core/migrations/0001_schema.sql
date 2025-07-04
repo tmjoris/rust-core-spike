@@ -18,8 +18,6 @@ CREATE TABLE sync_folder(
     enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE sqlite_sequence(name, seq);
-
 CREATE TABLE media(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sha1 BYTEA,
@@ -64,13 +62,11 @@ CREATE TABLE log(
 );
 
 CREATE TABLE search_label(
-    id INETGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     language INTEGER NOT NULL,
+    label_type INTEGER NOT NULL,
     text TEXT NOT NULL,
-    autocomplete_order INETEGER NOT NULL,
-    dirty SMALLINT NOT NULL DEFAULT 0,
-    state SMALLINT NOT NULL DEFAULT 0,
-    remote_id TEXT DEFAULT NULL,
+    autocomplete_order INETEGER NOT NULL, dirty SMALLINT NOT NULL DEFAULT 0, state SMALLINT NOT NULL DEFAULT 0, remote_id TEXT DEFAULT NULL,
     UNIQUE (language, label_type, text)
 );
 
@@ -79,10 +75,11 @@ CREATE TABLE search_label_media(
     label_id INTEGER NOT NULL,
     dirty SMALLINT NOT NULL DEFAULT 0,
     FOREIGN KEY(media_id) REFERENCES media(id) ON DELETE CASCADE,
+    FOREIGN KEY(label_id) REFERENCES search_label(id),
     PRIMARY KEY (media_id, label_id)
 );
 
-CREATE TABLE idx_search_label ON search_label(text);
+CREATE INDEX idx_search_label ON search_label(text);
 
 CREATE TABLE collection(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -93,8 +90,7 @@ CREATE TABLE collection(
     updated_at DATETIME NOT NULL,
     version INTEGER NOT NULL DEFAULT 0,
     state INT NOT NULL DEFAULT 0,
-    key BYTEA,
-    is_adhoc BOOLEAN NOT NULL DEFAULT FALSE,
+    key BYTEA, is_adhoc BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY(cover_media_id) REFERENCES media(id) ON DELETE SET NULL
 );
 
