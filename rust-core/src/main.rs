@@ -1,7 +1,7 @@
 use std::error::Error;
 use sqlx::{migrate::MigrateDatabase, Sqlite};
 
-const DB_URL: &str = "sqlite:./sqlite/sqlite.db";
+const DB_URL: &str = "sqlite:./sqlite/sqlite.db";//Requires initial relative file referencing to be detected. Only tested the db file creation and referencing on linux
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>>{
