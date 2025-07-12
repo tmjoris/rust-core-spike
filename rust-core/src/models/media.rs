@@ -1,9 +1,9 @@
 use chrono;
 
 #[derive(Debug)]
-struct media {
+struct Media {
     pub sha1: [&u8];
-    let ts = chrono::offset::Utc::now();
+    pub ts: String;
     pub remote_id: String;
     pub local_reference: String;
     pub local_size: i32;
@@ -11,7 +11,7 @@ struct media {
     pub meta_data [&u8];
     pub type: i32;
     pub state: i32;
-    let updated_at = chrono::offset::Utc::now();
+    pub updated_at: String;
     pub file_name: String;
     pub sort_order: i32;
     pub error_count: i32;
