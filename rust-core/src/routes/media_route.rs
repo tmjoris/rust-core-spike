@@ -35,7 +35,8 @@ pub async fn create(
     Json(media): Json<Media>
     )-> Result<StatusCode, AppError> {
     let ts = chrono::offset::Utc::now().to_rfc3339();
-    let query = "INSERT INTO media (sha1, ts, remote_id, local_reference, local_size, key, meta_data, type, state, updated_at, file_name, sort_order, error_count, version, format, error_message, local_bucket, liked, hidden, dirty)";
+    let query = "INSERT INTO media (sha1, ts, remote_id, local_reference, local_size, key, meta_data, type, state, updated_at, file_name, sort_order, error_count, version, format, error_message, local_bucket, liked, hidden, dirty) 
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     let result = sqlx::query(query)
         .bind(&media.sha1)
@@ -61,7 +62,9 @@ pub async fn create(
         .execute(&pool)
         .await;
     match result {
-        Ok(_) =>Ok(StatusCode::CREATED),
+        Ok(_) =>{
+            println!("Successfully created media");
+            Ok(StatusCode::CREATED)}
         Err(e) => {
             eprintln!("Failed to create media: {}", e);
             Err(AppError::Sqlx(e))

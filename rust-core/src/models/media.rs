@@ -3,7 +3,6 @@ use serde::Deserialize;
 #[derive(Debug, Deserialize)]
 pub struct Media {
     pub sha1: Vec<u8>,
-    pub ts: String,
     pub remote_id: String,
     pub local_reference: String,
     pub local_size: i32,

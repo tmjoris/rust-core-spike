@@ -23,8 +23,8 @@ async fn main() -> Result<(), Box<dyn Error>>{
         .await?;
     
     let app = Router::new()
-                    .route("/", get(|| async {"Hello, World"}))
-                    .route("/media", post(media_route::create))
+                    .route("/", get(|| async {"Welcome to Zeitkapsl"}))
+                    .route("/api/media", post(media_route::create))
                     .with_state(pool);    
     let listener = tokio::net::TcpListener::bind("localhost:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
