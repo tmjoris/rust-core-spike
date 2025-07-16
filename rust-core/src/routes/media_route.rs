@@ -6,7 +6,7 @@ use axum::{http::StatusCode, debug_handler,
 use sqlx::{Error as SqlxError};
 
 #[derive(Debug)]
-pub enum AppError {
+pub enum AppError { //We'd use our AppError enum to help us make our own errors throughout the application
     Sqlx(SqlxError),
 }
 
@@ -29,7 +29,6 @@ impl IntoResponse for AppError {
 }
 
 #[debug_handler]
-//pub async fn create(media: for<'a> &'a Media, pool: for<'a> &'a sqlx::SqlitePool)-> Result<StatusCode, String>{
 pub async fn create(
     State(pool): State<sqlx::SqlitePool>,
     Json(media): Json<Media>
@@ -71,3 +70,5 @@ pub async fn create(
         }
     }
 }
+
+//TODO Create update function for modifications and will use the updated_at ts pub updated_at: String

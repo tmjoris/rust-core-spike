@@ -10,7 +10,6 @@ pub struct Media {
     pub meta_data: Vec<u8>,
     pub r#type: i32,
     pub state: i32,
-    pub updated_at: String,
     pub file_name: String,
     pub sort_order: i32,
     pub error_count: i32,
