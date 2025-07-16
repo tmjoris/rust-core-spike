@@ -1,6 +1,8 @@
 use std::error::Error;
 use sqlx::{migrate::MigrateDatabase, Sqlite};
-use axum::{routing::get, Router};
+use axum::{routing::{get, post}, Router};
+mod routes;
+mod models;
 use crate::routes::media_route;
 
 const DB_URL: &str = "sqlite:./sqlite/sqlite.db";//Requires initial relative file referencing to be detected. Only tested the db file creation and referencing on linux
@@ -22,7 +24,8 @@ async fn main() -> Result<(), Box<dyn Error>>{
     
     let app = Router::new()
                     .route("/", get(|| async {"Hello, World"}))
-                    .route("/media", post(media_rote::create));    
+                    .route("/media", post(media_route::create))
+                    .with_state(pool);    
     let listener = tokio::net::TcpListener::bind("localhost:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 
